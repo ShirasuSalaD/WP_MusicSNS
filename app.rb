@@ -60,11 +60,22 @@ end
 
 get '/search' do
   # 検索フォームと検索一覧の表示(search.erb)
-  erb:search
+  uri = URI("https://itunes.apple.com/search?")
+  uri.query = URI.encode_www_form({
+    method: "GET",
+    country: "JP",
+    media: "music",
+    term: params[:term]
+  })
+  res = Net::HTTP.get_response(uri)
+  json = JSON.parse(res.body)
+  @tracks = json["artistName"]["trackViewUrl"]
+  erb :search
 end
 
 post '/search' do
   # iTunesAPIを使った検索・jsonの操作
+  redirect '/'
 end
 
 post '/new' do
@@ -73,12 +84,12 @@ end
 
 get '/home' do
 #  ユーザーに紐づいた投稿が表示されているか(home.erb)
-  erb:home
+  erb :home
 end
 
 get '/edit/:id' do
 #  投稿の編集フォームが表示できているか(edit.erb)
-  erb:edit
+  erb :edit
 end
 
 post '/update/:id' do
