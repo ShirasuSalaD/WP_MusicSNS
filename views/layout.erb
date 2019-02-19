@@ -14,7 +14,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
-  <nav class="navbar navbar-default">
+  <nav class="navbar navbar-fixed-top navbar-expand-md  bg-info">
     <div class="container">
       <div class="navbar-header">
         <a href="/" class="navbar-brand">MUSIC SNS!!!</a>
@@ -22,7 +22,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a>
             <%if !current_user.nil?%>
-            こんにちは
+            こんにちは♪
             <%=current_user.name%>さん
             <%else%>
             新規ユーザーですか？

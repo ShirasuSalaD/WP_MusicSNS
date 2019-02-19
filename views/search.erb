@@ -5,10 +5,36 @@
   <title>search</title>
 </head>
 <body>
-  <h2>検索フォーム</h2>
+  <h2>iTunes検索フォーム</h2>
   <form action="search" method="get">
     <input type="text" name="term" id="term" placeholder="検索ワード" />
     <input type="submit" value="検索" />
   </form>
+
+  <div>
+    <% if !@musics.empty? %>
+    <div class="container">
+      <% @musics.each do |music| %>
+      <div class="col-md-4 well">
+        <img src='<%= music["artworkUrl100"] %>' class='center-block'>
+        <p>
+          <%= music["artsitName"] %>
+        </p>
+        <p>
+          <%= music["collectionName"] %>
+        </p>
+        <p>
+          <%= music["trackName"] %>
+        </p>
+        <audio id="myMusic" controls loop>
+          <source src="<%= music['previewUrl'] %>">
+        </audio>
+      </div>
+      <% end %>
+    </div>
+    <% else %>
+    検索結果がありません
+    <% end %>
+  </div>
 </body>
 </html>
