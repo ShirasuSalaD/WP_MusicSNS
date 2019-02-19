@@ -11,17 +11,19 @@ helpers do
   end
 end
 
-before '/tasks' do
+before '/home' do
   if current_user.nil?
     redirect '/'
   end
 end
 
 get '/' do
+  # 投稿の一覧表示機能が出来ているか (index.erb)
   erb:index
 end
 
 get '/signup' do
+  # ユーザーの新規登録フォームの表示(sign_up.erb)
   erb:sign_up
 end
 
@@ -30,6 +32,9 @@ get '/signin' do
 end
 
 post '/signup' do
+#  ユーザーの新規登録機能ができているか
+#  画像のアップロードができているか
+#  アップロードした画像URLを保存できているか
   user=User.create(name:params[:name],password:params[:password],password_confirmation:params[:password_confirmation])
   if user.persisted?
     session[:user]=user.id
@@ -38,6 +43,9 @@ post '/signup' do
 end
 
 post '/signin' do
+#  ユーザーのログイン機能ができているか(session)
+#  /topと/homeはログインしていない場合、/sing_upへリダイレクトするようになっているか
+#  helperを使ってユーザーのログイン状態の管理をしているか
   user=User.find_by(name:params[:name])
   if user&&user.authenticate(params[:password])
     session[:user]=user.id
@@ -49,6 +57,40 @@ get '/signout' do
   session[:user]=nil
   redirect '/'
 end
+
+get '/search' do
+  # 検索フォームと検索一覧の表示(search.erb)
+  erb:search
+end
+
+post '/search' do
+  # iTunesAPIを使った検索・jsonの操作
+end
+
+post '/new' do
+#  投稿の新規作成機能が出来ているか
+end
+
+get '/home' do
+#  ユーザーに紐づいた投稿が表示されているか(home.erb)
+  erb:home
+end
+
+get '/edit/:id' do
+#  投稿の編集フォームが表示できているか(edit.erb)
+  erb:edit
+end
+
+post '/update/:id' do
+#  投稿の更新機能が出来ているか
+end
+
+get '/delete/:id' do
+#  投稿の削除機能が出来ているか
+end
+
+
+
 
 post '/tasks' do
   date=params[:due_date].split('-')#展開されたくないからシングルクオーテーション
