@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>MUSIC SNS!!!</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link href="https://fonts.googleapis.com/css?family=M+PLUS+1p" rel="stylesheet">
   <%# ブートストラップのバージョンが3のものを利用 %>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -14,7 +16,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
-  <nav class="navbar navbar-fixed-top navbar-expand-md  bg-info">
+  <nav class="navbar navbar-fixed-top" style="background-color:#ffffff8f">
     <div class="container">
       <div class="navbar-header">
         <a href="/" class="navbar-brand">MUSIC SNS!!!</a>
@@ -22,17 +24,18 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a>
             <%if !current_user.nil?%>
-            こんにちは♪
+            Welcome!
             <%=current_user.name%>さん
             <%else%>
-            新規ユーザーですか？
+            Go Registration😎
             <%end%>
         </li></a>
         <%if !current_user.nil?%>
-        <li> <a href="/signout">ログアウト</a></li>
+        <li><a href="/search">Search</a></li>
+        <li> <a href="/signout">Log out</a></li>
         <%else%>
-        <li> <a href="/signin">ログイン</a></li>
-        <li> <a href="/signup">新規登録</a></li>
+        <li> <a href="/signin">Log in</a></li>
+        <li> <a href="/signup">Sign up</a></li>
         <%end%>
       </ul>
     </div>

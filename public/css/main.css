@@ -1,0 +1,136 @@
+.navbar .navbar-fixed-top .container {
+  color: #ffffff;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+  margin: 5%;
+}
+
+.controls h2 {
+  font-family:
+    'ヒラギノ角ゴ StdN',
+    'Hiragino Kaku Gothic StdN'
+    'ヒラギノ角ゴ ProN W3',
+    'Hiragino Kaku Gothic ProN',
+    'メイリオ',
+    Meiryo,
+    'Helvetica',
+    'Arial',
+    'ＭＳ Ｐゴシック',
+    'MS PGothic''MS UI Gothic',
+    sans-serif;
+  text-align: center;
+  font-weight: bolder;
+  /*非対応のブラウザでの文字色を設定*/
+  color: #ACB6E5;
+  /*背景色にグラデーションを指定*/
+  background: -webkit-linear-gradient(0deg, #ACB6E5, #86FDE8);
+  /*テキストでくり抜く*/
+  -webkit-background-clip: text;
+  /*くり抜いた部分は背景を表示*/
+  -webkit-text-fill-color: transparent;
+}
+
+.lists {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+  margin: 0 5%;
+}
+
+.item {
+  border-radius: 10px;
+  background: #9effdf6e;
+  padding: 15px;
+  margin: 5px;
+  text-align: center;
+  color: white;
+  -moz-border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -o-border-radius: 30px;
+  -ms-border-radius: 30px;
+  border-radius: 30px;
+}
+
+.item p {
+  font-family:
+    'メイリオ',
+    Meiryo,
+    'Helvetica',
+    'Arial',
+    'ＭＳ Ｐゴシック',
+    'MS PGothic''MS UI Gothic',
+    sans-serif;
+  margin-top: 5%;
+}
+
+body {
+  font-family: "游ゴシック",
+    YuGothic,
+    "ヒラギノ角ゴ ProN W3",
+    "Hiragino Kaku Gothic ProN",
+    "メイリオ",
+    Meiryo,
+    sans-serif;
+  color: #666;
+  padding-top: 70px;
+  background-image: linear-gradient(-90deg, #37ACB9, #833D94);
+}
+
+input[type="text"],
+input[type="password"] {
+  margin: 20px auto 0 auto;
+  width: 320px;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  display: block;
+  cursor: text;
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  -ms-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -o-border-radius: 20px;
+  -ms-border-radius: 20px;
+  border-radius: 20px;
+  border: none;
+}
+
+input[type="submit"] {
+  margin: 20px auto 0 auto;
+  width: 240px;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  color: #fff !important;
+  background: #00b2eb;
+  display: block;
+  cursor: pointer;
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  -ms-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -o-border-radius: 20px;
+  -ms-border-radius: 20px;
+  border-radius: 20px;
+  border: none;
+}
+
+input[type="submit"]:hover {
+  background-color: #046dbb;
+}

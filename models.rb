@@ -5,11 +5,11 @@ if development?
   ActiveRecord::Base.establish_connection("sqlite3:db/development.db")
 end
 
-class User<ActiveRecord::Base
-  has_secure_password
-  validates :name,presence:true,format:{with:/\A\w+\z/}
-  validates :password,length:{in:5..10}
-  has_many :tasks
+class User < ActiveRecord::Base
+  has_secure_password validations: true
+  validates :name,  presence:true,  format:{with:/\A\w+\z/}
+  validates :password,  length:{in:5..10}
+  has_many :userposts
 end
 # セキュアなパスワードの実装は、has_secure_passwordというメソッドを呼び出すだけでほとんど終わってしまいます。
 # ・セキュアにハッシュ化したパスワードを、データベース内のpassword_digestという属性に保存できるようになる。
@@ -19,12 +19,12 @@ end
 #つまり文字の中に空白や改行とか無いよねってことができる \Zは末尾の改行を無視してしまうので小文字
 #↑もるもるつおい
 
-# class Task<ActiveRecord::Base
+# class Userposts < ActiveRecord::Base
 #   scope :due_over, -> {where('due_date<?',Date.today).where(completed:[nil,false])}
 #   scope :had_by, -> (user){where(user_id:user.id)}
-#   belongs_to :user
-#   belongs_to :list
-#   validates :title,presence:true
+#   belongs_to :author
+#   belongs_to :user_id
+#   validates :comment ,presence:true
 #   def remained_date
 #     return (due_date-Date.today).to_i
 #   end
