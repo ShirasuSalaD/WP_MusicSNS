@@ -9,5 +9,7 @@ class CreateUserposts < ActiveRecord::Migration[5.2]
       t.text :comment
       t.string :author
       t.integer :user_id
+      t.timestamps null: false
+    end
   end
 end

@@ -12,6 +12,19 @@
 
 ActiveRecord::Schema.define(version: 2019_02_20_014913) do
 
+  create_table "userposts", force: :cascade do |t|
+    t.string "artist"
+    t.string "album_title"
+    t.string "track_title"
+    t.string "track_img_url"
+    t.string "sample_url"
+    t.text "comment"
+    t.string "author"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "password_digest"

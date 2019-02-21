@@ -14,47 +14,60 @@ helpers do
   end
 end
 
-before '/home' do
-  if current_user.nil?
-    redirect '/'
-  end
+def image_upload(img)
+  logger.info "upload now"
+  tempfile = img[:tempfile]
+  upload = Cloudinary::Uploader.upload(tempfile.path)
+  contents = Count.last
+  contents.update_attribute(:img, upload['url'])
+end
+
+
+before '/' do
+    if current_user.nil?
+        redirect '/signin'
+    end
 end
 
 get '/' do
   # 投稿の一覧表示機能が出来ているか (index.erb)
+  @count = Count.all
   erb:index
 end
 
+
 get '/signup' do
-  # ユーザーの新規登録フォームの表示(sign_up.erb)
+  # ユーザーの新規登録フォームの表示(sign_up.erb):DONE
   erb:sign_up
 end
 
-get '/signin' do
-  erb:sign_in
-end
-
 post '/signup' do
-#  ユーザーの新規登録機能ができているか
-#  画像のアップロードができているか
-#  アップロードした画像URLを保存できているか
+  #  ユーザーの新規登録機能ができているか:DONE
+  #  画像のアップロードができているか
+  #  アップロードした画像URLを保存できているか
   user=User.create(
     name:params[:name],
     password:params[:password],
     password_confirmation:params[:password_confirmation]
     )
   if user.persisted?
-    session[:user]=user.id
-    redirect '/'
+      session[:user]=user.id
+      redirect '/'
   else
+    @error_message = ""
     redirect '/signup'
   end
 end
 
+
+get '/signin' do
+  erb:sign_in
+end
+
 post '/signin' do
-#  ユーザーのログイン機能ができているか(session)
+#  ユーザーのログイン機能ができているか(session):DONE
 #  /topと/homeはログインしていない場合、/sing_upへリダイレクトするようになっているか
-#  helperを使ってユーザーのログイン状態の管理をしているか
+#  helperを使ってユーザーのログイン状態の管理をしているか:DONE
   user=User.find_by(
     name:params[:name]
     )
@@ -65,6 +78,7 @@ post '/signin' do
     redirect '/signin'
   end
 end
+
 
 get '/signout' do
   session[:user]=nil
@@ -92,9 +106,25 @@ end
 #   redirect '/'
 # end
 
-# post '/new' do
-# #  投稿の新規作成機能が出来ているか
-# end
+
+get '/new' do
+  erb :new
+end
+
+post '/new' do
+#  投稿の新規作成機能が出来ているか
+  Count.create({
+        title: params[:title],
+        number: 0,
+        img: "",
+        main_counter: current_user.name
+    })
+  puts params
+  if params[:file]
+    image_upload(params[:file])
+  end
+  redirect "/"
+end
 
 # get '/home' do
 # #  ユーザーに紐づいた投稿が表示されているか(home.erb)
