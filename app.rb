@@ -51,33 +51,28 @@ get '/signup' do
   erb:sign_up
 end
 
+def image_upload(icon_url)
+  logger.info "upload now"
+  tempfile = icon_url[:tempfile]
+  upload = Cloudinary::Uploader.upload(tempfile.path)
+  # 今回の課題では、Contributionは任意のテーブル名になります
+  contents = User.last
+  contents.update_attribute(:icon_url, upload['url'])
+end
+
 post '/signup' do
-  #  ユーザーの新規登録機能ができているか:DONE
-  #  画像のアップロードができているか
-  #  アップロードした画像URLを保存できているか
 
-  # if !params[:icon_url].nil?
-  @tempfile = params[:icon_url][:tempfile] # <-ここにアップロードしたファイルの一時ファイルができる
-  uploads ={}
-  uploads[:fish] = Cloudinary::Uploader.upload(@tempfile.path)
-  @url = uploads[:fish]['url']
-  # end
-
-  # if params[:file]
-  #   tempfile = params[:file][:tempfile]
-  #   filename = params[:file][:filename]
-  #   uploadfile =  Cloudinary::Uploader.upload(tempfile.path)
-  #   new_user = User.last
-  #   new_user.update_attribute(:icon_url, uploadfile['url'])
-  # end
 
   user=User.create(
   name: params[:name],
   password: params[:password],
   password_confirmation: params[:password_confirmation],
-  icon_url: @url
+  icon_url: ""
   )
 
+  if params[:file]
+    image_upload(params[:file])
+  end
   if user.persisted?
     session[:user]=user.id
     redirect '/home'
@@ -85,6 +80,17 @@ post '/signup' do
     # @error_message = ""
     redirect '/signup'
   end
+
+
+
+  # # if !params[:icon_url].nil?
+  #   # binding.pry
+  #   tempfile = params[:file][:tempfile]
+  #   uploads ={}
+  #   uploads[:icon_url] = Cloudinary::Uploader.upload(@tempfile.path)
+  #   @url = uploads[:icon_url]['url']
+  # # end
+
 end
 
 
