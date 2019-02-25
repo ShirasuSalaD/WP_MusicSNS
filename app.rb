@@ -127,7 +127,7 @@ end
 
 post '/new' do
   #投稿の新規作成機能が出来ているか
-  if !current_user.posts.nil?
+  # unless current_user.posts.nil?
   current_user.posts.create(
     artist: params[:artist],
     album_title: params[:album_title],
@@ -138,14 +138,14 @@ post '/new' do
     user_id: current_user.id
   )
   redirect '/home'
-  end
+  # end
 end
 
 get '/home' do
 #  ユーザーに紐づいた投稿が表示されているか(home.erb)
-  if !@user_posts.nil?
+  # unless @user_posts.nil?
     @user_posts = Post.where(user_id: current_user).order('updated_at DESC')
-  end
+  # end
   erb :home
 end
 
