@@ -27,9 +27,9 @@
       <ul class="nav navbar-nav navbar-right">
         <%if !current_user.nil?%>
         <%if !current_user.icon_url.nil?%>
-        <li><a class="nav-item nav-link" href="/home"><img class="profile-icon" src="<%= current_user.icon_url %>"></a></li>
+        <li><a href="/home"><img class="profile-icon" src="<%= current_user.icon_url %>"></a></li>
         <%else%>
-        <li><a class="nav-item nav-link" href="/home"><img class="profile-icon" src="<%='/images/default.png'%>"></a></li>
+        <li><a href="/home"><img class="profile-icon" src="<%='/images/default.png'%>"></a></li>
         <%end%>
 
         <li><a href="/home">Welcome!
