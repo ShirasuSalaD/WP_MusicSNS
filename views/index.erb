@@ -24,7 +24,7 @@
 		<%if !@posts.nil?%>
 		<%@posts.each do|post|%>
 		<div class='item'>
-			<img src="<%=post[" track_img_url"]%>" <br>
+			<img src="<%=post["track_img_url"]%>" <br>
 			<p>Artist<br>
 				<%=post["artist"]%>
 			</p>
@@ -35,7 +35,7 @@
 				<%=post["track_title"]%>
 			</p>
 			<audio id="myMusic" controls loop>
-				<source src="<%= post[" sample_url"] %>">
+				<source src="<%= post["sample_url"] %>">
 			</audio>
 			<p>Comment<br>
 				<%=post["comment"]%>

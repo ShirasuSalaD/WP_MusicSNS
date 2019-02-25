@@ -5,33 +5,23 @@
 </div>
 
 <div class='lists'>
-  <%if !@musics.nil?%>
-  <%@muser_posts.each do|post|%>
+  <%@user_posts.each do|post|%>
   <div class='item'>
-    <img src="<%=post[" track_img_url"]%>" class='center-block'>
-    <p>
-      <%=post["artist"]%>
-    </p>
-    <p>
-      <%=post["album_title"]%>
-    </p>
-    <p>
-      <%=post["track_title"]%>
-    </p>
+    <img src="<%=post["track_img_url"]%>" class='center-block'>
+    <p><%=post["artist"]%></p>
+    <p><%=post["album_title"]%></p>
+    <p><%=post["track_title"]%></p>
     <audio id="myMusic" controls loop>
-      <source src="<%= post[" sample_url"] %>">
+      <source src="<%= post["sample_url"] %>">
     </audio>
-    <p>Comment：
-      <%=post["comment"]%>
-    </p>
+    <p>Comment：<%=post["comment"]%></p>
     <br>
     <form action="/edit/<%= post.id %>" method="get">
-      <button type="submit">編集</button>
+      <button type="submit">Edit</button>
     </form>
     <form action="/delete/<%= post.id %>" method="post">
-      <button type="submit">削除</button>
+      <button type="submit">delete</button>
     </form>
   </div>
-  <%end%>
   <%end%>
 </div>
