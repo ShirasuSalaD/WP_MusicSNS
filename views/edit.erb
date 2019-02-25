@@ -1,7 +1,8 @@
-<div class="container">
-  <h2>Edit Comment</h2>
-  <form class="controls" action="/edit/<%=@music.id%>" method="POST">
-    <input type="text" name="comment" placeholder="comment"><br>
-    <input type="submit" value="更新">
-  </form>
-</div>
+
+  <div class="controls">
+    <form action="/edit/<%=@user_posts.id%>" method="POST">
+      <h2>Edit Comment</h2>
+      <input type="text" name="comment" placeholder="comment"><br>
+      <input type="submit" value="Update">
+    </form>
+  </div>

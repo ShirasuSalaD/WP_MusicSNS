@@ -39,9 +39,9 @@ end
 
 get '/' do
   # 投稿の一覧表示機能が出来ているか (index.erb)
-  if !@posts.nil?
+  # if !@posts.nil?
     @posts = Post.all.order('updated_at DESC')
-  end
+  # end
   erb:index
 end
 
@@ -51,27 +51,28 @@ get '/signup' do
   erb:sign_up
 end
 
+def image_upload(icon_url)
+  logger.info "upload now"
+  tempfile = icon_url[:tempfile]
+  upload = Cloudinary::Uploader.upload(tempfile.path)
+  # 今回の課題では、Contributionは任意のテーブル名になります
+  contents = User.last
+  contents.update_attribute(:icon_url, upload['url'])
+end
+
 post '/signup' do
-  #  ユーザーの新規登録機能ができているか:DONE
-  #  画像のアップロードができているか
-  #  アップロードした画像URLを保存できているか
-
-  if params[:file]
-    tempfile = params[:file][:tempfile]
-    filename = params[:file][:filename]
-    uploadfile =  Cloudinary::Uploader.upload(tempfile.path)
-    new_user = User.last
-    new_user.update_attribute(:icon_url, uploadfile['url'])
-  end
 
 
-  user = User.create(
-    name: params[:name],
-    password: params[:password],
-    icon_url: "",
-    password_confirmation: params[:password_confirmation]
+  user=User.create(
+  name: params[:name],
+  password: params[:password],
+  password_confirmation: params[:password_confirmation],
+  icon_url: ""
   )
 
+  if params[:file]
+    image_upload(params[:file])
+  end
   if user.persisted?
     session[:user]=user.id
     redirect '/home'
@@ -79,6 +80,17 @@ post '/signup' do
     # @error_message = ""
     redirect '/signup'
   end
+
+
+
+  # # if !params[:icon_url].nil?
+  #   # binding.pry
+  #   tempfile = params[:file][:tempfile]
+  #   uploads ={}
+  #   uploads[:icon_url] = Cloudinary::Uploader.upload(@tempfile.path)
+  #   @url = uploads[:icon_url]['url']
+  # # end
+
 end
 
 
@@ -127,7 +139,7 @@ end
 
 post '/new' do
   #投稿の新規作成機能が出来ているか
-  if !current_user.posts.nil?
+  # unless current_user.posts.nil?
   current_user.posts.create(
     artist: params[:artist],
     album_title: params[:album_title],
@@ -138,31 +150,31 @@ post '/new' do
     user_id: current_user.id
   )
   redirect '/home'
-  end
+  # end
 end
 
 get '/home' do
 #  ユーザーに紐づいた投稿が表示されているか(home.erb)
-  if !@user_posts.nil?
+  # unless @user_posts.nil?
     @user_posts = Post.where(user_id: current_user).order('updated_at DESC')
-  end
+  # end
   erb :home
 end
 
 get '/edit/:id' do
 #  投稿の編集フォームが表示できているか(edit.erb)
-  @post =Post.find(params[:id])
+  @user_posts =Post.find(params[:id])
   erb :edit
 end
 
 post '/edit/:id' do
   post = Post.find(params[:id])
-  post.comment = CGI.escape_html(params[:updated_comment])
+  post.comment = CGI.escape_html(params[:comment])
   post.save
   redirect '/home'
 end
 
-get '/delete/:id' do
+post '/delete/:id' do
 #  投稿の削除機能が出来ているか
   post = Post.find(params[:id])
   post.destroy

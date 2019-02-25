@@ -27,5 +27,5 @@ gem 'cloudinary'
 gem 'json'
 gem 'dotenv'
 
-# gem 'pry-rails'
-# gem 'pry-doc'
+gem 'pry-rails'
+gem 'pry-doc'
