@@ -56,12 +56,20 @@ post '/signup' do
   #  画像のアップロードができているか
   #  アップロードした画像URLを保存できているか
 
-  if !params[:profile_url].nil?
-  @tempfile = params[:profile_url][:tempfile] # <-ここにアップロードしたファイルの一時ファイルができる
+  # if !params[:icon_url].nil?
+  @tempfile = params[:icon_url][:tempfile] # <-ここにアップロードしたファイルの一時ファイルができる
   uploads ={}
   uploads[:fish] = Cloudinary::Uploader.upload(@tempfile.path)
   @url = uploads[:fish]['url']
-  end
+  # end
+
+  # if params[:file]
+  #   tempfile = params[:file][:tempfile]
+  #   filename = params[:file][:filename]
+  #   uploadfile =  Cloudinary::Uploader.upload(tempfile.path)
+  #   new_user = User.last
+  #   new_user.update_attribute(:icon_url, uploadfile['url'])
+  # end
 
   user=User.create(
   name: params[:name],
