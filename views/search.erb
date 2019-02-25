@@ -30,8 +30,8 @@
   </div>
 
   <div class="lists">
-    <% if !@musics.nil? %>
-    <% @musics.each do |music| %>
+    <% if !@posts.nil? %>
+    <% @posts.each do |post| %>
     <div class="item">
       <img src='<%= music["artworkUrl100"] %>' class='center-block'>
       <p>
@@ -47,11 +47,11 @@
         <source src="<%= music['previewUrl'] %>">
       </audio>
       <form action="/new" method="POST">
-        <input type="hidden" value="<%=music[" artistName"]%>" name="artist">
-        <input type="hidden" value="<%=music[" collectionName"]%>" name="album_title">
-        <input type="hidden" value="<%=music[" trackName"]%>" name="track_title">
-        <input type="hidden" value="<%=music[" artworkUrl100"]%>"name="track_img_url">
-        <input type="hidden" value="<%=music[" previewUrl"]%>"name="sample_url">
+        <input type="hidden" value="<%=music["artistName"]%>" name="artist">
+        <input type="hidden" value="<%=music["collectionName"]%>" name="album_title">
+        <input type="hidden" value="<%=music["trackName"]%>" name="track_title">
+        <input type="hidden" value="<%=music["artworkUrl100"]%>"name="track_img_url">
+        <input type="hidden" value="<%=music["previewUrl"]%>"name="sample_url">
         <input type="text" name="comment" placeholder="Comment">
         <input type="submit" value="Post">
       </form>

@@ -39,9 +39,9 @@ end
 
 get '/' do
   # 投稿の一覧表示機能が出来ているか (index.erb)
-  if !@posts.nil?
+  # if !@posts.nil?
     @posts = Post.all.order('updated_at DESC')
-  end
+  # end
   erb:index
 end
 
@@ -151,18 +151,18 @@ end
 
 get '/edit/:id' do
 #  投稿の編集フォームが表示できているか(edit.erb)
-  @post =Post.find(params[:id])
+  @user_posts =Post.find(params[:id])
   erb :edit
 end
 
 post '/edit/:id' do
   post = Post.find(params[:id])
-  post.comment = CGI.escape_html(params[:updated_comment])
+  post.comment = CGI.escape_html(params[:comment])
   post.save
   redirect '/home'
 end
 
-get '/delete/:id' do
+post '/delete/:id' do
 #  投稿の削除機能が出来ているか
   post = Post.find(params[:id])
   post.destroy
