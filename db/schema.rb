@@ -10,16 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_20_014913) do
+ActiveRecord::Schema.define(version: 2019_02_24_184945) do
 
-  create_table "userposts", force: :cascade do |t|
+  create_table "posts", force: :cascade do |t|
     t.string "artist"
     t.string "album_title"
     t.string "track_title"
     t.string "track_img_url"
     t.string "sample_url"
     t.text "comment"
-    t.string "author"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -28,7 +27,7 @@ ActiveRecord::Schema.define(version: 2019_02_20_014913) do
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "password_digest"
-    t.string "prof_img_url"
+    t.string "icon_url"
   end
 
 end

@@ -23,4 +23,9 @@ group :production do
   gem 'pg', '~> 0.18'
 end
 
-gem 'carrierwave'
+gem 'cloudinary'
+gem 'json'
+gem 'dotenv'
+
+# gem 'pry-rails'
+# gem 'pry-doc'

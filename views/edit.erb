@@ -1,22 +1,7 @@
 <div class="container">
-  <form action="/tasks/<%=@task.id%>" method="post">
-    <div class="controls">
-      <div class="form-group">
-        <input class="form-control input-lg" type="text" name="title" value=<%=CGI.escapeHTML(@task.title)%>><br>
-        <input class="form-control input-lg" type="text" name="due_date" value=<%=@task.due_date%>><br>
-        リスト:
-        <select name="list" class="form-control">
-          <%List.all.each do |list|%>
-          <option value="<%=list.id%>" <%if list.id==@task.list.id%> selected
-            <%end%>>
-            <%=list.name%>
-          </option>
-          <%end%>
-        </select>
-      </div>
-      <div class="form-group col-lg-4">
-        <input class="form-control col-lg-4" type="submit" value="更新">
-      </div>
-    </div>
+  <h2>Edit Comment</h2>
+  <form class="controls" action="/edit/<%=@music.id%>" method="POST">
+    <input type="text" name="comment" placeholder="comment"><br>
+    <input type="submit" value="更新">
   </form>
 </div>

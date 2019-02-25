@@ -1,11 +1,69 @@
 <div class="container">
-  <form class="controls" action="/signup" method="post">
+  <form class="controls" action="/signup" method="POST" enctype="multipart/form-data">
     <div class="form-group">
       <h2>Registration</h2>
       <input type="text" name="name" placeholder="enter your name"><br>
       <input type="password" name="password" placeholder="enter password"><br>
-      <input type="password" name="password_confirmation" placeholder="check password">
+      <input type="password" name="password_confirmation" placeholder="check password"><br>
+      <div class="imagePreview"></div>
+      <div class="input-group">
+        <label class="input-group-btn">
+          <span class="btn btn-primary">
+            Choose File<input type="file" style="display:none" class="uploadFile" onchange="preview(this)">
+          </span>
+        </label>
+        <input type="text" class="form-control" readonly="">
+      </div>
       <input type="submit" value="Registration">
     </div>
   </form>
 </div>
+
+
+<%# 参考：https://favril.hatenablog.com/entry/20100506/1273143063 %>
+<%# <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+  function preview(ele) {
+    if (!ele.files.length) return; // ファイル未選択
+
+    var file = ele.files[0];
+    if (!/^image\/(png|jpeg|gif)$/.test(file.type)) return; // typeプロパティでMIMEタイプを参照
+
+    var img = document.createElement('img');
+    var fr = new FileReader();
+    fr.onload = function () {
+      img.src = fr.result; // 読み込んだ画像データをsrcにセット
+      document.getElementById('preview_field').appendChild(img);
+    }
+    fr.readAsDataURL(file); // 画像読み込み
+
+    // 画像名・MIMEタイプ・ファイルサイズ
+    document.getElementById('preview_field').innerHTML =
+      'file name: ' + file.name + '<br />' +
+      'file type: ' + file.type + '<br />' +
+      'file size: ' + file.size + '<br />';
+  }
+</script> %>
+
+<%# 参考：https://qiita.com/ynakahira/items/46d44793827920282f75 %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+  $(document).on('change', ':file', function () {
+    var input = $(this),
+      numFiles = input.get(0).files ? input.get(0).files.length : 1,
+      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    input.parent().parent().next(':text').val(label);
+
+    var files = !!this.files ? this.files : [];
+    if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
+    if (/^image/.test(files[0].type)) { // only image file
+      var reader = new FileReader(); // instance of the FileReader
+      reader.readAsDataURL(files[0]); // read the local file
+      reader.onloadend = function () { // set image data as background of div
+        input.parent().parent().parent().prev('.imagePreview').css("background-image", "url(" + this.result + ")");
+      }
+    }
+  });
+</script>

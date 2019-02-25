@@ -2,12 +2,51 @@
 <html lang="ja">
 <head>
 	<meta charset="UTF-8">
-	<title>タイトル</title>
+	<title>MUSIC SNS!!!</title>
 </head>
 <body>
+	<div class="top-form">
+		<div class="login-form">
+			<% if current_user.nil? %>
+			<form action='/signin' method="post">
+				<input type="text" id="name" name="name" placeholder="Username">
+				<input name="password" type="password" placeholder="Password">
+				<input type="submit" value="Sign in">
+			</form>
+			<%end%>
+		</div>
+	</div>
+
 	<div class="controls">
 		<h2>Recently Posts</h2>
-
+	</div>
+	<div class='lists'>
+		<%if !@posts.nil?%>
+		<%@posts.each do|post|%>
+		<div class='item'>
+			<img src="<%=post[" track_img_url"]%>" <br>
+			<p>Artist<br>
+				<%=post["artist"]%>
+			</p>
+			<p>Album<br>
+				<%=post["album_title"]%>
+			</p>
+			<p>Track<br>
+				<%=post["track_title"]%>
+			</p>
+			<audio id="myMusic" controls loop>
+				<source src="<%= post[" sample_url"] %>">
+			</audio>
+			<p>Comment<br>
+				<%=post["comment"]%>
+			</p>
+			<%posted_user = User.find_by(id: post["user_id"])%>
+			<p>Author<br>
+				<%=posted_user.name%>
+			</p>
+		</div>
+		<%end%>
+		<%end%>
 	</div>
 </body>
 </html>

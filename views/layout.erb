@@ -25,21 +25,27 @@
         <a href="/" class="navbar-brand">MUSIC SNS!!!</a>
       </div>
       <ul class="nav navbar-nav navbar-right">
-        <li><a>
-            <%if !current_user.nil?%>
-            Welcome!
-            <%=current_user.name%>さん
-            <%else%>
-            Go Registration😎
-            <%end%>
-        </li></a>
+        <%if !current_user.nil?%>
+        <%if !current_user.icon_url.nil?%>
+        <li><a class="nav-item nav-link" href="/home"><img class="profile-icon" src="<%= current_user.icon_url %>"></a></li>
+        <%else%>
+        <li><a class="nav-item nav-link" href="/home"><img class="profile-icon" src="<%='/images/default.png'%>"></a></li>
+        <%end%>
+
+        <li><a href="/home">Welcome!
+            <%=current_user.name%>さん</a></li>
+
+        <%else%>
+        <li><a href="/signup">Go Registration😎</a></li>
+        <%end%>
+
         <%if !current_user.nil?%>
         <li><a href="/search">Search</a></li>
         <li> <a href="/signout">Log out</a></li>
         <%else%>
         <li> <a href="/signin">Log in</a></li>
-        <li> <a href="/signup">Sign up</a></li>
-        <%end%>
+        <li> <a href="/signup">Sign up</a></>
+          <%end%>
       </ul>
     </div>
   </nav>

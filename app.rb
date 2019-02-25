@@ -5,6 +5,23 @@ require 'sinatra/activerecord'
 require './models'
 require 'open-uri'
 require 'net/http'
+require 'json'
+require 'rubygems'
+require 'sinatra/json'
+
+Dotenv.load
+
+# # loggerの導入
+# require 'logger'
+
+# logger = Logger.new('sinatra.log')
+
+# post '/new' do
+#   http_headers = request.env.select { |k, v| k.start_with?('HTTP_') }
+#   logger.info http_headers
+#   logger.info params['key1']
+# end
+
 
 enable :sessions
 
@@ -14,24 +31,17 @@ helpers do
   end
 end
 
-def image_upload(img)
-  logger.info "upload now"
-  tempfile = img[:tempfile]
-  upload = Cloudinary::Uploader.upload(tempfile.path)
-  contents = Count.last
-  contents.update_attribute(:img, upload['url'])
-end
-
-
-before '/' do
+before '/home' do
     if current_user.nil?
-        redirect '/signin'
+        redirect '/signup'
     end
 end
 
 get '/' do
   # 投稿の一覧表示機能が出来ているか (index.erb)
-  @count = Count.all
+  if !@posts.nil?
+    @posts = Post.all.order('updated_at DESC')
+  end
   erb:index
 end
 
@@ -45,16 +55,28 @@ post '/signup' do
   #  ユーザーの新規登録機能ができているか:DONE
   #  画像のアップロードができているか
   #  アップロードした画像URLを保存できているか
-  user=User.create(
-    name:params[:name],
-    password:params[:password],
-    password_confirmation:params[:password_confirmation]
-    )
+
+  if params[:file]
+    tempfile = params[:file][:tempfile]
+    filename = params[:file][:filename]
+    uploadfile =  Cloudinary::Uploader.upload(tempfile.path)
+    new_user = User.last
+    new_user.update_attribute(:icon_url, uploadfile['url'])
+  end
+
+
+  user = User.create(
+    name: params[:name],
+    password: params[:password],
+    icon_url: "",
+    password_confirmation: params[:password_confirmation]
+  )
+
   if user.persisted?
-      session[:user]=user.id
-      redirect '/'
+    session[:user]=user.id
+    redirect '/home'
   else
-    @error_message = ""
+    # @error_message = ""
     redirect '/signup'
   end
 end
@@ -68,15 +90,12 @@ post '/signin' do
 #  ユーザーのログイン機能ができているか(session):DONE
 #  /topと/homeはログインしていない場合、/sing_upへリダイレクトするようになっているか
 #  helperを使ってユーザーのログイン状態の管理をしているか:DONE
-  user=User.find_by(
-    name:params[:name]
-    )
-  if user&&user.authenticate(params[:password])
-    session[:user]=user.id
-    redirect '/'
-  else
-    redirect '/signin'
+  user = User.find_by(name: params[:name])
+  if user && user.authenticate(params[:password])
+    session[:user] = user.id
+    redirect '/search'
   end
+  redirect '/'
 end
 
 
@@ -87,6 +106,11 @@ end
 
 get '/search' do
   # 検索フォームと検索一覧の表示(search.erb)
+  erb :search
+end
+
+post '/search' do
+  # iTunesAPIを使った検索・jsonの操作
   uri = URI("https://itunes.apple.com/search")
   uri.query = URI.encode_www_form({
     method: "GET",
@@ -101,45 +125,46 @@ get '/search' do
   erb :search
 end
 
-# post '/search' do
-#   # iTunesAPIを使った検索・jsonの操作
-#   redirect '/'
-# end
-
-
-get '/new' do
-  erb :new
-end
-
 post '/new' do
-#  投稿の新規作成機能が出来ているか
-  Count.create({
-        title: params[:title],
-        number: 0,
-        img: "",
-        main_counter: current_user.name
-    })
-  puts params
-  if params[:file]
-    image_upload(params[:file])
+  #投稿の新規作成機能が出来ているか
+  if !current_user.posts.nil?
+  current_user.posts.create(
+    artist: params[:artist],
+    album_title: params[:album_title],
+    track_title: params[:track_title],
+    track_img_url: params[:track_img_url],
+    sample_url: params[:sample_url],
+    comment: params[:comment],
+    user_id: current_user.id
+  )
+  redirect '/home'
   end
-  redirect "/"
 end
 
-# get '/home' do
-# #  ユーザーに紐づいた投稿が表示されているか(home.erb)
-#   erb :home
-# end
+get '/home' do
+#  ユーザーに紐づいた投稿が表示されているか(home.erb)
+  if !@user_posts.nil?
+    @user_posts = Post.where(user_id: current_user).order('updated_at DESC')
+  end
+  erb :home
+end
 
-# get '/edit/:id' do
-# #  投稿の編集フォームが表示できているか(edit.erb)
-#   erb :edit
-# end
+get '/edit/:id' do
+#  投稿の編集フォームが表示できているか(edit.erb)
+  @post =Post.find(params[:id])
+  erb :edit
+end
 
-# post '/update/:id' do
-# #  投稿の更新機能が出来ているか
-# end
+post '/edit/:id' do
+  post = Post.find(params[:id])
+  post.comment = CGI.escape_html(params[:updated_comment])
+  post.save
+  redirect '/home'
+end
 
-# get '/delete/:id' do
-# #  投稿の削除機能が出来ているか
-# end
+get '/delete/:id' do
+#  投稿の削除機能が出来ているか
+  post = Post.find(params[:id])
+  post.destroy
+  redirect '/home'
+end
